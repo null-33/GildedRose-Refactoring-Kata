@@ -9,9 +9,9 @@ import {
 } from './filters';
 import {
   createCopy,
-  decreaseQuality,
+  decreaseQualityBy,
   decreaseSellIn,
-  increaseQuality,
+  increaseQualityBy,
   setQuality,
 } from './modifiers';
 
@@ -26,6 +26,9 @@ export class Item {
     this.quality = quality;
   }
 }
+
+const DECAY_RATE = 1;
+const IMPROVE_RATE = 1;
 
 export class GildedRose {
   constructor(public readonly items: Item[] = []) {}
@@ -42,25 +45,37 @@ export class GildedRose {
 
     itemsToBeSold.forEach(decreaseSellIn);
 
-    regularItems.filter(sellInBetween(0)).forEach(decreaseQuality());
+    regularItems
+      .filter(sellInBetween(0))
+      .forEach(decreaseQualityBy(DECAY_RATE));
     regularItems
       .filter(sellInBetween(undefined, 0))
-      .forEach(decreaseQuality(2));
+      .forEach(decreaseQualityBy(DECAY_RATE * 2));
 
-    conjuredItems.filter(sellInBetween(0)).forEach(decreaseQuality(2));
+    conjuredItems
+      .filter(sellInBetween(0))
+      .forEach(decreaseQualityBy(DECAY_RATE * 2));
     conjuredItems
       .filter(sellInBetween(undefined, 0))
-      .forEach(decreaseQuality(4));
+      .forEach(decreaseQualityBy(DECAY_RATE * 4));
 
-    specialItems.filter(sellInBetween(0)).forEach(increaseQuality());
+    specialItems
+      .filter(sellInBetween(0))
+      .forEach(increaseQualityBy(IMPROVE_RATE));
     specialItems
       .filter(sellInBetween(undefined, 0))
-      .forEach(increaseQuality(2));
+      .forEach(increaseQualityBy(IMPROVE_RATE * 2));
 
     backstagePasses.filter(sellInBetween(undefined, 0)).forEach(setQuality(0));
-    backstagePasses.filter(sellInBetween(10)).forEach(increaseQuality());
-    backstagePasses.filter(sellInBetween(5, 10)).forEach(increaseQuality(2));
-    backstagePasses.filter(sellInBetween(0, 5)).forEach(increaseQuality(3));
+    backstagePasses
+      .filter(sellInBetween(10))
+      .forEach(increaseQualityBy(IMPROVE_RATE));
+    backstagePasses
+      .filter(sellInBetween(5, 10))
+      .forEach(increaseQualityBy(IMPROVE_RATE * 2));
+    backstagePasses
+      .filter(sellInBetween(0, 5))
+      .forEach(increaseQualityBy(IMPROVE_RATE * 3));
 
     return new GildedRose(items);
   }
