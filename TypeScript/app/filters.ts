@@ -25,8 +25,6 @@ export const isRegularItem = (item: Item): boolean =>
   );
 
 export const hasToBeSold = (item: Item): boolean => !isLegendary(item);
-export const isDecayableItem = (item: Item): boolean =>
-  isConjuredItem(item) || isRegularItem(item);
 
 export const sellInBetween =
   (from?: number, to?: number) =>

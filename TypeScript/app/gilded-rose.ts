@@ -2,7 +2,6 @@ import {
   hasToBeSold,
   isBackstagePass,
   isConjuredItem,
-  isDecayableItem,
   isRegularItem,
   isSpecialItem,
   sellInBetween,
@@ -37,9 +36,8 @@ export class GildedRose {
     const items = this.items.map(createCopy);
 
     const itemsToBeSold = items.filter(hasToBeSold);
-    const decayableItems = items.filter(isDecayableItem);
-    const regularItems = decayableItems.filter(isRegularItem);
-    const conjuredItems = decayableItems.filter(isConjuredItem);
+    const regularItems = itemsToBeSold.filter(isRegularItem);
+    const conjuredItems = itemsToBeSold.filter(isConjuredItem);
     const backstagePasses = itemsToBeSold.filter(isBackstagePass);
     const specialItems = itemsToBeSold.filter(isSpecialItem);
 
